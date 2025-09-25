@@ -1,0 +1,9 @@
+Model,Year_of_Manufacture,Number_of_Engines,Engine_Type,Capacity,Fuel_Consumption_(L/hour),Hourly_Maintenance_Cost_($),Age,Sales_Region
+Bombardier CRJ200,2005,2,Turbofan,50,5.12,1300.50,18,Europe
+Airbus A320,2012,2,Turbofan,180,12.10,800.00,11,Asia
+Boeing 737,2019,2,Turbofan,162,13.50,600.75,4,North America
+Cessna 172,1999,1,Piston,4,20.35,2000.00,24,Australia
+Airbus A350,2015,2,Turbofan,350,9.20,1900.00,8,Europe
+Boeing 787,2020,2,Turbofan,300,11.00,2200.00,3,Asia
+Cessna 172,2008,1,Piston,4,22.10,1800.50,15,South America
+Bombardier CRJ700,2003,2,Turbofan,70,6.80,1500.25,20,North America
