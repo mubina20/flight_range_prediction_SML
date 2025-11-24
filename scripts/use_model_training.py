@@ -13,7 +13,7 @@ from src.model_training import Trainer
 from src.feature_engineering import FeatureSelection
 import os
 
-df = pd.read_csv("data/engineered/engineered_airplane_price_dataset.csv")
+df = pd.read_csv("data/preprocessed/preprocessed_dataset.csv")
 
 fs = FeatureSelection(df, target="Range_(km)")
 fs.filter_by_correlation()
@@ -44,7 +44,7 @@ kf = KFold(n_splits=5, shuffle=True, random_state=42)
 for model in models:
     trainer = Trainer(model, x, y)
     trainer.train().evaluate()
-    # trainer.save_model()
+    trainer.save_model()
 
     cv_scores = cross_val_score(model, x, y, cv=kf, scoring='r2')
 
@@ -73,4 +73,4 @@ def SaveComparison(table):
     with open('results/all_model_compare.txt', 'w') as f:
         f.write(table)
 
-SaveComparison(table)
+SaveComparison(table) 

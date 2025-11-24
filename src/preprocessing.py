@@ -2,24 +2,14 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import numpy as np
 
-df = pd.read_csv("data/raw/airplane_price_dataset.csv")
 encoder = LabelEncoder()
 scaler = MinMaxScaler()
 
 # Preprocessing class
-class DataPreprocessing:
+class Preprocessing:
     def __init__(self, df):
         self.df = df.copy()
 
-    def fillMissingValues(self):
-        for col in self.df.columns:
-            if self.df[col].isnull().any():
-                if self.df[col].dtype == 'object':
-                    self.df[col].fillna(self.df[col].mode()[0], inplace=True)
-                else:
-                    self.df[col].fillna(self.df[col].mean(), inplace=True)
-        return self
-    
     def encoding(self):
         for col in self.df.columns:
             if self.df[col].dtype == 'object':

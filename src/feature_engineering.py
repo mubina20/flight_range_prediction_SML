@@ -4,29 +4,60 @@ class FeatureCreation:
     def __init__(self, df):
         self.df = df.copy()
 
-    # create company
-    def create_Company(self):
-        self.df['Company'] = self.df['Model'].astype(str).str.split(' ').str[0]
-        return self
+    def create_features(self):
 
-    # bir odamga ketodigon HMC narhi
-    def create_HMC_per_person(self):
-        self.df['HMC_per_person'] = self.df['Hourly_Maintenance_Cost_($)'] / self.df['Capacity']
-        return self
+        self.df['Company'] = self.df['Model'].str.split(' ').str[0]
 
-    # har km dan narhi
-    def create_Cost_per_km(self):
-        self.df['Cost_per_km'] = self.df['Price_($)'] / self.df['Range_(km)']
-        return self
-    
-    # dataset 2023ga moslangan bulgan uchun 2025 ga utkazish
-    def change_Age(self):
         self.df['Age'] = 2025 - self.df['Year_of_Manufacture']
+
+        self.df['Age_Group'] = pd.cut(
+            self.df['Age'],
+            bins=[0, 10, 20, 30, 40, 200],
+            labels=['0-10','10-20','20-30','30-40','40+']
+        )
+
+        self.df['HMC_per_person'] = (
+            self.df['Hourly_Maintenance_Cost_($)'] /
+            self.df['Capacity']
+        )
+
+        engine_power_map = {
+            'Turbofan': 6,
+            'Piston': 1,
+            'Turboprop': 3
+        }
+        self.df['Engine_Power_Factor'] = (
+            self.df['Number_of_Engines'] *
+            self.df['Engine_Type'].map(engine_power_map)
+        )
+
+        self.df['Price_per_Seat'] = (
+            self.df['Price_($)'] /
+            self.df['Capacity']
+        )
+
+        self.df['Seats_per_Engine'] = (
+            self.df['Capacity'] /
+            self.df['Number_of_Engines']
+        )
+
+        company_counts = self.df['Company'].value_counts()
+        self.df['Company_Popularity'] = self.df['Company'].map(company_counts)
+
+        self.df['FuelCost_Maint_Index'] = (
+            self.df['Fuel_Consumption_(L/hour)'] * 1.0 +
+            self.df['Hourly_Maintenance_Cost_($)'] * 0.01
+        )
+
+        self.df['Engine_to_Capacity'] = (
+            self.df['Number_of_Engines'] /
+            self.df['Capacity']
+        )
+
         return self
-    
+
     def getDataset(self):
         return self.df
-    
 
 class FeatureSelection:
     def __init__(self, df, target):
