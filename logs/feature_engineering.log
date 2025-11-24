@@ -1,0 +1,5 @@
+2025-11-24 14:37:47,017 - INFO - feature_engineering - New engineered features successfully added.
+2025-11-24 14:37:47,017 - INFO - use_feature_engineering - Engineering steps completed successfully.
+2025-11-24 14:37:47,114 - INFO - use_feature_engineering - Engineered dataset saved to data/engineered/engineered_dataset.csv
+2025-11-24 14:37:47,115 - INFO - use_feature_engineering - Engineering pipeline saved to pipeline/feature_pipeline.joblib
+2025-11-24 14:37:47,115 - INFO - use_feature_engineering - Successfully engineered the dataset and saved all outputs!

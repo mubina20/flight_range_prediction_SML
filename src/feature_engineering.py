@@ -1,24 +1,30 @@
 import pandas as pd
+from sklearn.base import BaseEstimator, TransformerMixin
+from src.logger import get_logger
 
-class FeatureCreation:
-    def __init__(self, df):
-        self.df = df.copy()
+logger = get_logger('feature_engineering', 'feature_engineering.log')
 
-    def create_features(self):
+class FeatureCreatorTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
 
-        self.df['Company'] = self.df['Model'].str.split(' ').str[0]
+    def fit(self, X, y=None):
+        return self
 
-        self.df['Age'] = 2025 - self.df['Year_of_Manufacture']
+    def transform(self, X):
+        X = X.copy()
 
-        self.df['Age_Group'] = pd.cut(
-            self.df['Age'],
+        X['Company'] = X['Model'].str.split(' ').str[0]
+        X['Age'] = 2025 - X['Year_of_Manufacture']
+        X['Age_Group'] = pd.cut(
+            X['Age'],
             bins=[0, 10, 20, 30, 40, 200],
             labels=['0-10','10-20','20-30','30-40','40+']
         )
 
-        self.df['HMC_per_person'] = (
-            self.df['Hourly_Maintenance_Cost_($)'] /
-            self.df['Capacity']
+        X['HMC_per_person'] = (
+            X['Hourly_Maintenance_Cost_($)'] /
+            X['Capacity']
         )
 
         engine_power_map = {
@@ -26,54 +32,59 @@ class FeatureCreation:
             'Piston': 1,
             'Turboprop': 3
         }
-        self.df['Engine_Power_Factor'] = (
-            self.df['Number_of_Engines'] *
-            self.df['Engine_Type'].map(engine_power_map)
+        X['Engine_Power_Factor'] = (
+            X['Number_of_Engines'] *
+            X['Engine_Type'].map(engine_power_map)
         )
 
-        self.df['Price_per_Seat'] = (
-            self.df['Price_($)'] /
-            self.df['Capacity']
+        X['Price_per_Seat'] = (
+            X['Price_($)'] /
+            X['Capacity']
         )
 
-        self.df['Seats_per_Engine'] = (
-            self.df['Capacity'] /
-            self.df['Number_of_Engines']
+        X['Seats_per_Engine'] = (
+            X['Capacity'] /
+            X['Number_of_Engines']
         )
 
-        company_counts = self.df['Company'].value_counts()
-        self.df['Company_Popularity'] = self.df['Company'].map(company_counts)
+        company_counts = X['Company'].value_counts()
+        X['Company_Popularity'] = X['Company'].map(company_counts)
 
-        self.df['FuelCost_Maint_Index'] = (
-            self.df['Fuel_Consumption_(L/hour)'] * 1.0 +
-            self.df['Hourly_Maintenance_Cost_($)'] * 0.01
+        X['FuelCost_Maint_Index'] = (
+            X['Fuel_Consumption_(L/hour)'] * 1.0 +
+            X['Hourly_Maintenance_Cost_($)'] * 0.01
         )
 
-        self.df['Engine_to_Capacity'] = (
-            self.df['Number_of_Engines'] /
-            self.df['Capacity']
+        X['Engine_to_Capacity'] = (
+            X['Number_of_Engines'] /
+            X['Capacity']
         )
 
-        return self
+        logger.info("New engineered features successfully added.")
 
-    def getDataset(self):
-        return self.df
+        return X
 
-class FeatureSelection:
-    def __init__(self, df, target):
-        self.df = df.copy()
-        self.target = target
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        if 'logger' in state:
+            del state['logger']
+        return state
+
+# class FeatureSelection:
+#     def __init__(self, df, target):
+#         self.df = df.copy()
+#         self.target = target
     
-    def filter_by_correlation(self):
-        corr = self.df.corr()[self.target].abs()
-        selected_features = corr[corr >= 0.2].index.tolist()
+#     def filter_by_correlation(self):
+#         corr = self.df.corr()[self.target].abs()
+#         selected_features = corr[corr >= 0.2].index.tolist()
 
-        if self.target in selected_features:
-            selected_features.remove(self.target)
+#         if self.target in selected_features:
+#             selected_features.remove(self.target)
 
-        self.selected_features = selected_features
+#         self.selected_features = selected_features
 
-        return self
+#         return self
     
-    def get_selected_features(self):
-        return self.selected_features
+#     def get_selected_features(self):
+#         return self.selected_features

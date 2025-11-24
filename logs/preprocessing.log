@@ -26,3 +26,17 @@
 2025-11-24 14:18:06,259 - INFO - use_preprocessing - Preprocessed dataset saved to data/preprocessed/preprocessed_dataset.csv
 2025-11-24 14:18:06,264 - INFO - use_preprocessing - Preprocessing pipeline saved to pipeline/preprocessed_pipeline.joblib
 2025-11-24 14:18:06,264 - INFO - use_preprocessing - Successfully preprocessed the dataset and saved all outputs!
+2025-11-24 14:37:57,983 - INFO - preprocessing - Applied Label Encoding to column: Model
+2025-11-24 14:37:57,984 - INFO - preprocessing - Applied One-Hot Encoding to column: Engine_Type
+2025-11-24 14:37:57,986 - INFO - preprocessing - Applied Label Encoding to column: Sales_Region
+2025-11-24 14:37:57,987 - INFO - preprocessing - Applied One-Hot Encoding to column: Company
+2025-11-24 14:37:57,987 - INFO - preprocessing - Applied One-Hot Encoding to column: Age_Group
+2025-11-24 14:37:57,993 - INFO - preprocessing - Generated dummy variables for: Engine_Type
+2025-11-24 14:37:57,997 - INFO - preprocessing - Generated dummy variables for: Company
+2025-11-24 14:37:58,001 - INFO - preprocessing - Generated dummy variables for: Age_Group
+2025-11-24 14:37:58,001 - INFO - preprocessing - Categorical features successfully encoded.
+2025-11-24 14:37:58,038 - INFO - preprocessing - Numerical scaling applied to 28 columns using MinMaxScaler().
+2025-11-24 14:37:58,038 - INFO - use_preprocessing - Preprocessing steps completed successfully.
+2025-11-24 14:37:58,211 - INFO - use_preprocessing - Preprocessed dataset saved to data/preprocessed/preprocessed_dataset.csv
+2025-11-24 14:37:58,217 - INFO - use_preprocessing - Preprocessing pipeline saved to pipeline/preprocessed_pipeline.joblib
+2025-11-24 14:37:58,217 - INFO - use_preprocessing - Successfully preprocessed the dataset and saved all outputs!

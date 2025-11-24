@@ -1,18 +1,21 @@
 import pandas as pd
 import os
-from src.feature_engineering import FeatureCreation
+from src.feature_engineering import FeatureCreatorTransformer
+from joblib import dump
+from src.logger import get_logger
 
+logger = get_logger('use_feature_engineering', 'feature_engineering.log')
 df = pd.read_csv('data/raw/airplane_dataset.csv')
 
-# Feature Creation
-feature_egnineering = FeatureCreation(df)
-df = feature_egnineering.create_features().getDataset()
+feature_creator = FeatureCreatorTransformer()
+df_features = feature_creator.transform(df)
+logger.info("Engineering steps completed successfully.")
 
-# Save dataset
-output_folder = 'data/engineered'
-os.makedirs(output_folder, exist_ok=True)
+os.makedirs('data/engineered', exist_ok=True)
+df_features.to_csv('data/engineered/engineered_dataset.csv', index=False)
+logger.info("Engineered dataset saved to data/engineered/engineered_dataset.csv")
 
-output_path = os.path.join(output_folder, 'engineered_dataset.csv')
-df.to_csv(output_path, index=False)
+dump(feature_creator, 'pipeline/feature_pipeline.joblib')
+logger.info("Engineering pipeline saved to pipeline/feature_pipeline.joblib")
 
-print(df.head(10))
+logger.info("Successfully engineered the dataset and saved all outputs!")
